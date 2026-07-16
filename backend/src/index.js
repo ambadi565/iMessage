@@ -8,7 +8,7 @@ import path from 'path';
 import User from './models/user.model.js';
 import connectDB from './lib/db.js';
 import { clerkMiddleware } from '@clerk/express';
-
+import clerkWebHook from "./webhooks/clerk.webhook.js";
 
 const app = express();
 
@@ -17,8 +17,10 @@ const frontendUrl = process.env.FRONTEND_URL
 
 const publicDir = path.join(process.cwd(), 'public');
 
-app.use(express.json());
 
+app.use("/api/webhooks/clerk", express.raw({ type: "application/json"}), clerkWebHook);
+
+app.use(express.json());
 //app.use(cors()); // all sites can access
 app.use(cors({
     origin: frontendUrl,
