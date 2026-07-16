@@ -37,13 +37,9 @@ if (fs.existsSync(publicDir)) {
     app.use(express.static(publicDir));
 
     // Handle all other routes by serving the index.html file
-    app.get('/*', (req, res, next) => {
-        res.sendFile(path.join(publicDir, 'index.html'), (err) => {
-            if (err) {
-                next(err);
-            }
-        });
-    });
+    app.get("/{*any}", (req, res, next) => {
+    res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
+  });
 }
 
 app.listen(PORT, () => {
