@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         // clerk verifier expects web request with the raw body; express.raw gives a buffer
         const request = new Request("http://internal/webhooks.clerk", {
             method: "POST",
-            header: new Headers(req.header),
+            header: new Headers(req.headers),
             body: payload
         })
     
