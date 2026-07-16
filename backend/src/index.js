@@ -9,6 +9,7 @@ import User from './models/user.model.js';
 import connectDB from './lib/db.js';
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebHook from "./webhooks/clerk.webhook.js";
+import authRoutes from "./routes/auth.route.js"
 import job from './lib/cron.js';
 
 const app = express();
@@ -33,6 +34,8 @@ app.use(clerkMiddleware());
 app.get("/health", (req, res) => {
     res.status(200).json({ message: "Hello World" });
 });
+
+app.use("/api/auth", authRoutes)
 
 // Serve static files from public directory
 // this is for production build
