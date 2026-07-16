@@ -27,7 +27,7 @@ app.use(cors({
 app.use(clerkMiddleware());
 
 
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
     res.status(200).json({ message: "Hello World" });
 });
 
@@ -45,4 +45,8 @@ if (fs.existsSync(publicDir)) {
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
   connectDB();  
+
+  if(process.env.NODE_ENV === 'production') {
+    job.start()
+  }
 });
