@@ -10,6 +10,7 @@ import connectDB from './lib/db.js';
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebHook from "./webhooks/clerk.webhook.js";
 import authRoutes from "./routes/auth.route.js"
+import messageRoutes from "./routes/message.route.js"
 import job from './lib/cron.js';
 
 const app = express();
@@ -36,6 +37,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes)
+app.use("/api/messages", messageRoutes)
 
 // Serve static files from public directory
 // this is for production build
