@@ -95,6 +95,12 @@ export async function sendMessage(req, res) {
 
     await newMessage.save();
 
+    const recieverSocketId = getRecieverSocketId(receiverId.toString());
+    // send the new message to the receiver if they are online
+    if (recieverSocketId) {
+      io.to(recieverSocketId).emit("newMessage", newMessage);
+    }
+
     res.status(201).json(newMessage);
   } catch (error) {
     console.error("Error in sendMessage:", error.message);

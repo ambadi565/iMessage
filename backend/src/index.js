@@ -12,8 +12,8 @@ import clerkWebHook from "./webhooks/clerk.webhook.js";
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
 import job from './lib/cron.js';
+import { app, server } from "./lib/socket.js"
 
-const app = express();
 
 const PORT = process.env.PORT
 const frontendUrl = process.env.FRONTEND_URL
@@ -21,7 +21,7 @@ const frontendUrl = process.env.FRONTEND_URL
 const publicDir = path.join(process.cwd(), 'public');
 
 
-app.use("/api/webhooks/clerk", express.raw({ type: "application/json"}), clerkWebHook);
+app.use("/api/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebHook);
 
 app.use(express.json());
 //app.use(cors()); // all sites can access
@@ -46,15 +46,15 @@ if (fs.existsSync(publicDir)) {
 
     // Handle all other routes by serving the index.html file
     app.get("/{*any}", (req, res, next) => {
-    res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
-  });
+        res.sendFile(path.join(publicDir, "index.html"), (err) => next(err));
+    });
 }
 
-app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
-  connectDB();  
+server.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
+    connectDB();
 
-  if(process.env.NODE_ENV === 'production') {
-    job.start()
-  }
+    if (process.env.NODE_ENV === 'production') {
+        job.start()
+    }
 });
