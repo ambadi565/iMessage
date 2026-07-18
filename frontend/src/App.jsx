@@ -2,17 +2,26 @@ import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
 import { Button } from '@heroui/react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { WallpaperProvider } from './contexts/WallpaperContext';
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import ChatPage from './pages/ChatPage';
+import AuthPage from './pages/AuthPage';
+import { useAuth } from '@clerk/react';
+import { PageLoader } from './components/PageLoader';
 
 
 function App() {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return <PageLoader />;
+  }
+
   return (
     <ThemeProvider>
       <WallpaperProvider>
         <Routes>
-          <Route path="/" element={<ChatPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={isSignedIn ? <ChatPage /> : <Navigate to={"/auth"} replace />} />
+          <Route path="/auth" element={!isSignedIn ? <AuthPage /> : <Navigate to={"/"} replace />} />
         </Routes>
       </WallpaperProvider>
     </ThemeProvider>
