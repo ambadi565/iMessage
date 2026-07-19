@@ -6,7 +6,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import ChatPage from './pages/ChatPage';
 import AuthPage from './pages/AuthPage';
 import { useAuth } from '@clerk/react';
-import { PageLoader } from './components/PageLoader';
+import PageLoader from './components/PageLoader';
 
 
 function App() {
