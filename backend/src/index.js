@@ -1,4 +1,5 @@
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors'; // Browser security rules, to enable which all urls can access this server
 import dotenv from 'dotenv'; dotenv.config();
 import fs from 'fs';
@@ -12,14 +13,18 @@ import clerkWebHook from "./webhooks/clerk.webhook.js";
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
 import job from './lib/cron.js';
-import { app, server } from "./lib/socket.js"
+import { initializeSocket } from "./lib/socket.js"
 
+
+const app = express();
+const server = createServer(app);
 
 const PORT = process.env.PORT
 const frontendUrl = process.env.FRONTEND_URL
 
 const publicDir = path.join(process.cwd(), 'public');
 
+initializeSocket(server);
 
 app.use("/api/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebHook);
 

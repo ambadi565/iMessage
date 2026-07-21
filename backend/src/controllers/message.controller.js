@@ -1,5 +1,6 @@
 import User from '../models/user.model.js';
 import Message from '../models/message.model.js';
+import { io } from '../lib/socket.js';
 
 export async function getUsersForSidebar(req, res) {
     try {
